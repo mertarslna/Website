@@ -81,6 +81,9 @@ footer {
     color: white;
     text-align: center;
     padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
     footer .socials a {
@@ -88,36 +91,26 @@ footer {
         margin: 0 10px;
     }
 
-/* Sections */
-section {
+/* Contact Form */
+.contact {
     padding: 50px 20px;
     text-align: center;
 }
 
-.project-list {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.project {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-    width: 30%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-    .project h3 {
-        margin-bottom: 10px;
+    .contact form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-form input, form textarea {
+form input,
+form textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 5px;
     border: 1px solid #ddd;
 }
@@ -129,8 +122,22 @@ form button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    font-size: 1.1rem;
 }
 
     form button:hover {
         background-color: #0056b3;
+    }
+
+/* Footer Social Media Links */
+footer .socials a {
+    color: white;
+    margin: 0 10px;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+    footer .socials a:hover {
+        color: #007BFF;
     }
