@@ -59,7 +59,6 @@ header {
                 background-color: #575757;
                 border-radius: 5px;
             }
-
 /* Hero Section */
 .hero {
     background-color: #333;
@@ -84,6 +83,8 @@ header {
         padding: 0.8rem 2rem;
         border-radius: 5px;
         font-size: 1.1rem;
+        text-decoration: none;
+        display: inline-block;
     }
 
         .hero .cta-button:hover {
@@ -210,6 +211,18 @@ header {
             .projects .project .project-link:hover {
                 background-color: #e67e22;
             }
+/* Youtube-Video Section */
+.youtube-video {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+iframe {
+    max-width: 100%;
+    height: 500px; /* Yüksekliği sabit tutarak en boy oranını korur */
+}
 
 /* Footer */
 footer {
