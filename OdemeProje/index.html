@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Paythor Ödeme</title>
+</head>
+<body>
+  <h2>Giriş Yap</h2>
+  <input type="email" id="email" placeholder="E-posta"><br>
+  <input type="password" id="password" placeholder="Şifre"><br>
+  <button onclick="login()">Giriş Yap</button>
+
+  <h2>OTP Doğrulama</h2>
+  <input type="text" id="otp" placeholder="OTP Kodu"><br>
+  <button onclick="verify()">Doğrula</button>
+
+  <h2>Ödeme Oluştur</h2>
+  <input type="number" id="amount" placeholder="Tutar"><br>
+  <input type="text" id="desc" placeholder="Açıklama"><br>
+  <button onclick="createPayment()">Ödeme Linki Oluştur</button>
+  <p id="output"></p>
+
+  <script>
+    async function login() {
+      const res = await fetch('signin.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const data = await res.text();
+      alert(data);
+    }
+
+    async function verify() {
+      const res = await fetch('verify_otp.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ otp: document.getElementById('otp').value })
+      });
+      const data = await res.text();
+      alert(data);
+    }
+
+    async function createPayment() {
+      const res = await fetch('create_payment.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          amount: parseFloat(document.getElementById('amount').value),
+          description: document.getElementById('desc').value
+        })
+      });
+      const data = await res.json();
+      document.getElementById('output').innerHTML = data.checkout_url 
+        ? `<a href="${data.checkout_url}" target="_blank">Ödemeye Git</a>` 
+        : JSON.stringify(data);
+    }
+  </script>
+</body>
+</html>
