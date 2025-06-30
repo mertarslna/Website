@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Paythor Ödeme Arayüzü</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Paythor Ödeme Sistemi</h1>
+
+  <div id="login">
+    <h2>Giriş Yap</h2>
+    <input type="text" id="login-username" placeholder="E-posta">
+    <input type="password" id="login-password" placeholder="Şifre">
+    <button onclick="login()">Giriş Yap</button>
+    <p>
+      Hesabınız yok mu?
+      <button onclick="showRegister()">Kayıt Ol</button>
+    </p>
+  </div>
+
+  <div id="register" class="hidden">
+    <h2>Kayıt Ol</h2>
+    <input type="text" id="reg-firstname" placeholder="Ad">
+    <input type="text" id="reg-lastname" placeholder="Soyad">
+    <input type="text" id="reg-email" placeholder="E-posta">
+    <input type="text" id="reg-phone" placeholder="Telefon (örn: 905551234567)">
+    <input type="password" id="reg-password" placeholder="Şifre">
+    <input type="text" id="reg-merchant-name" placeholder="Mağaza Adı">
+    <input type="text" id="reg-merchant-company" placeholder="Şirket Adı">
+    <input type="text" id="reg-merchant-email" placeholder="Mağaza E-posta">
+    <input type="text" id="reg-merchant-phone" placeholder="Mağaza Telefon">
+    <input type="text" id="reg-merchant-web" placeholder="Web Sitesi (opsiyonel)">
+    <input type="text" id="reg-merchant-country" placeholder="Ülke Kodu (örn: tr)">
+    <button onclick="register()">Kayıt Ol</button>
+    <p>
+      Zaten hesabınız var mı?
+      <button onclick="showLogin()">Giriş Yap</button>
+    </p>
+  </div>
+
+  <div id="otp" class="hidden">
+    <h2>OTP Doğrulama</h2>
+    <input type="text" id="otp-code" placeholder="OTP Kodu">
+    <button onclick="verifyOtp()">Doğrula</button>
+  </div>
+
+  <div id="payment" style="display:none;">
+    <h2>Ödeme Oluştur</h2>
+    <input type="text" id="amount" placeholder="Tutar (örnek: 100)">
+    <button onclick="createPayment()">Ödeme Linki Oluştur</button>
+    <p id="payment-link"></p>
+  </div>
+
+  <script>
+    function showRegister() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.remove('hidden');
+      document.getElementById('otp').classList.add('hidden');
+    }
+    function showLogin() {
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+      document.getElementById('otp').classList.add('hidden');
+    }
+    // OTP ve ödeme bölümleri JS ile yönetiliyor
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

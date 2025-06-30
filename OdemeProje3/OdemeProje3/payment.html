@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ödeme Oluştur</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cart-row { margin-bottom: 8px; }
+    .cart-row input { width: 110px; }
+    .cart-row button { margin-left: 4px; }
+    .form-flex { display: flex; flex-wrap: wrap; gap: 16px; }
+    .form-flex fieldset { min-width: 260px; flex: 1 1 260px; box-sizing: border-box; }
+    @media (max-width: 1100px) {
+      .form-flex { flex-direction: column; }
+      .form-flex fieldset { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Ödeme Oluştur</h1>
+  <form id="payment-form" onsubmit="createPayment(); return false;">
+    <div class="form-flex">
+      <fieldset>
+        <legend>Alıcı Bilgileri</legend>
+        <label>Ad: <input type="text" id="payer-firstname" value="Ahmet"></label><br>
+        <label>Soyad: <input type="text" id="payer-lastname" value="Cinar"></label><br>
+        <label>E-posta: <input type="email" id="payer-email" value="ahmet.cinar@example.com"></label><br>
+        <label>Telefon: <input type="text" id="payer-phone" value="5000000000"></label><br>
+        <label>Adres: <input type="text" id="payer-address" value="123 Main St"></label><br>
+        <label>Şehir: <input type="text" id="payer-city" value="Istanbul"></label><br>
+        <label>İl: <input type="text" id="payer-state" value="Istanbul"></label><br>
+        <label>Posta Kodu: <input type="text" id="payer-postal" value="07050"></label><br>
+        <label>Ülke: <input type="text" id="payer-country" value="TR"></label><br>
+        <label>IP: <input type="text" id="payer-ip" value="127.0.0.1"></label><br>
+      </fieldset>
+      <fieldset>
+        <legend>Sepet (Ürünler)</legend>
+        <div id="cart-list"></div>
+        <button type="button" onclick="addCartRow()">Ürün Ekle</button>
+        <div style="margin-top:10px;">
+          <strong>Toplam Tutar (TRY): <span id="amount">0.00</span></strong>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Kargo (Shipping) Bilgileri</legend>
+        <label>Ad: <input type="text" id="shipping-firstname" value="John"></label><br>
+        <label>Soyad: <input type="text" id="shipping-lastname" value="Doe"></label><br>
+        <label>Telefon: <input type="text" id="shipping-phone" value="5000000000"></label><br>
+        <label>E-posta: <input type="email" id="shipping-email" value="john.doe@example.com"></label><br>
+        <label>Adres: <input type="text" id="shipping-address" value="456 Vasm St"></label><br>
+        <label>Şehir: <input type="text" id="shipping-city" value="Los Angeles"></label><br>
+        <label>İl: <input type="text" id="shipping-state" value="Los Angeles"></label><br>
+        <label>Posta Kodu: <input type="text" id="shipping-postal" value="08500"></label><br>
+        <label>Ülke: <input type="text" id="shipping-country" value="USA"></label><br>
+      </fieldset>
+      <fieldset>
+        <legend>Fatura (Invoice) Bilgileri</legend>
+        <label>Fatura ID: <input type="text" id="invoice-id" value="cart_hash_123"></label><br>
+        <label>Ad: <input type="text" id="invoice-firstname" value="John"></label><br>
+        <label>Soyad: <input type="text" id="invoice-lastname" value="Doe"></label><br>
+        <label>Adet: <input type="text" id="invoice-quantity" value="1"></label><br>
+      </fieldset>
+    </div>
+    <button type="submit" style="margin-top:16px;">Oluştur</button>
+  </form>
+  <p id="payment-link"></p>
+  <script>
+    // Varsayılan ürünler
+    const defaultCart = [
+      {id:"PRD-123", name:"Product Name", type:"product", price:"50.00", quantity:2},
+      {id:"DSC-SUMMER2024", name:"SUMMER2024 (10%)", type:"discount", price:"5.00", quantity:1},
+      {id:"SHIP-1234", name:"Shipping", type:"shipping", price:"10.00", quantity:1},
+      {id:"TAX-TOTAL-5678", name:"Tax", type:"tax", price:"9.00", quantity:1}
+    ];
+    function addCartRow(obj) {
+      const cartList = document.getElementById('cart-list');
+      const idx = cartList.children.length;
+      const row = document.createElement('div');
+      row.className = "cart-row";
+      row.innerHTML = `
+        <input type="text" placeholder="ID" id="cart${idx}-id" value="${obj?.id||''}">
+        <input type="text" placeholder="Ad" id="cart${idx}-name" value="${obj?.name||''}">
+        <input type="text" placeholder="Tip" id="cart${idx}-type" value="${obj?.type||''}">
+        <input type="text" placeholder="Fiyat" id="cart${idx}-price" value="${obj?.price||''}">
+        <input type="number" min="1" placeholder="Adet" id="cart${idx}-quantity" value="${obj?.quantity||1}">
+        <button type="button" onclick="this.parentNode.remove(); updateTotal();">Sil</button>
+      `;
+      Array.from(row.querySelectorAll('input')).forEach(inp => {
+        inp.addEventListener('input', updateTotal);
+      });
+      cartList.appendChild(row);
+      updateTotal();
+    }
+    function updateTotal() {
+      const cartList = document.getElementById('cart-list');
+      let total = 0;
+      for (let i = 0; i < cartList.children.length; i++) {
+        const row = cartList.children[i];
+        const price = parseFloat(row.querySelector(`[id^="cart${i}-price"]`).value) || 0;
+        const qty = parseFloat(row.querySelector(`[id^="cart${i}-quantity"]`).value) || 0;
+        const type = row.querySelector(`[id^="cart${i}-type"]`).value;
+        if (type === "discount") {
+          total -= price * qty;
+        } else {
+          total += price * qty;
+        }
+      }
+      document.getElementById('amount').innerText = total.toFixed(2);
+    }
+    window.onload = function() {
+      defaultCart.forEach(addCartRow);
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
