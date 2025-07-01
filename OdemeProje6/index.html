@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Paythor Ödeme Arayüzü</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .card { max-width: 400px; margin: 40px auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px 24px; }
+    .hidden { display: none; }
+    .center { text-align: center; }
+    .switch-link { background: none; color: #4CAF50; border: none; cursor: pointer; text-decoration: underline; font-size: 15px; }
+    .switch-link:hover { color: #388e3c; }
+  </style>
+</head>
+<body>
+  <h1>Paythor Ödeme Sistemi</h1>
+  <div class="main-container">
+    <div id="login" class="card">
+      <h2>Giriş Yap</h2>
+      <label>E-posta
+        <input type="text" id="login-username" placeholder="E-posta">
+      </label>
+      <label>Şifre
+        <input type="password" id="login-password" placeholder="Şifre">
+      </label>
+      <button onclick="login()">Giriş Yap</button>
+      <p class="center">
+        Hesabınız yok mu?
+        <button class="switch-link" onclick="showRegister()">Kayıt Ol</button>
+      </p>
+      <p class="center" style="margin-top:8px;">
+        <button class="switch-link" onclick="showForgotPassword()">Şifremi Unuttum</button>
+      </p>
+    </div>
+
+    <div id="register" class="card hidden">
+      <h2>Kayıt Ol</h2>
+      <label>Ad
+        <input type="text" id="reg-firstname" placeholder="Ad">
+      </label>
+      <label>Soyad
+        <input type="text" id="reg-lastname" placeholder="Soyad">
+      </label>
+      <label>E-posta
+        <input type="text" id="reg-email" placeholder="E-posta">
+      </label>
+      <label>Telefon
+        <input type="text" id="reg-phone" placeholder="Telefon (örn: 905551234567)">
+      </label>
+      <label>Şifre
+        <input type="password" id="reg-password" placeholder="Şifre">
+      </label>
+      <label>Mağaza Adı
+        <input type="text" id="reg-merchant-name" placeholder="Mağaza Adı">
+      </label>
+      <label>Şirket Adı
+        <input type="text" id="reg-merchant-company" placeholder="Şirket Adı">
+      </label>
+      <label>Mağaza E-posta
+        <input type="text" id="reg-merchant-email" placeholder="Mağaza E-posta">
+      </label>
+      <label>Mağaza Telefon
+        <input type="text" id="reg-merchant-phone" placeholder="Mağaza Telefon">
+      </label>
+      <label>Web Sitesi (opsiyonel)
+        <input type="text" id="reg-merchant-web" placeholder="Web Sitesi (opsiyonel)">
+      </label>
+      <label>Ülke Kodu
+        <input type="text" id="reg-merchant-country" placeholder="Ülke Kodu (örn: tr)">
+      </label>
+      <button onclick="register()">Kayıt Ol</button>
+      <p class="center">
+        Zaten hesabınız var mı?
+        <button class="switch-link" onclick="showLogin()">Giriş Yap</button>
+      </p>
+    </div>
+
+    <div id="forgot-password" class="card hidden">
+      <h2>Şifremi Unuttum</h2>
+      <label>E-posta
+        <input type="text" id="forgot-email" placeholder="E-posta">
+      </label>
+      <label>Telefon
+        <input type="text" id="forgot-phone" placeholder="Telefon">
+      </label>
+      <button onclick="forgotPassword()">Şifre Sıfırlama Kodu Gönder</button>
+      <p class="center">
+        <button class="switch-link" onclick="showLogin()">Girişe Dön</button>
+      </p>
+    </div>
+
+    <div id="reset-password" class="card hidden">
+      <h2>Şifre Sıfırla</h2>
+      <label>E-posta
+        <input type="text" id="reset-email" placeholder="E-posta">
+      </label>
+      <label>Telefon
+        <input type="text" id="reset-phone" placeholder="Telefon">
+      </label>
+      <label>OTP Kodu
+        <input type="text" id="reset-otp" placeholder="OTP Kodu">
+      </label>
+      <label>Yeni Şifre
+        <input type="password" id="reset-new-password" placeholder="Yeni Şifre">
+      </label>
+      <button onclick="resetPassword()">Şifreyi Sıfırla</button>
+      <p class="center">
+        <button class="switch-link" onclick="showLogin()">Girişe Dön</button>
+      </p>
+    </div>
+
+    <div id="otp" class="card hidden">
+      <h2>OTP Doğrulama</h2>
+      <label>OTP Kodu
+        <input type="text" id="otp-code" placeholder="OTP Kodu">
+      </label>
+      <button onclick="verifyOtp()">Doğrula</button>
+    </div>
+
+    <div id="payment" class="card hidden">
+      <h2>Ödeme Oluştur</h2>
+      <button onclick="window.location.href='payment.html'">Ödeme Paneline Git</button>
+      <p id="payment-link"></p>
+    </div>
+
+    <!-- Kullanıcı listesi paneli -->
+    <div id="user-list-panel" class="card hidden">
+      <h2>Kullanıcı Listesi</h2>
+      <button onclick="listUsers()">Kullanıcıları Listele</button>
+      <div id="user-list-container" style="margin-top:16px;"></div>
+      <p class="center" style="margin-top:12px;">
+        <button class="switch-link" onclick="showPayment()">Ödeme Paneline Dön</button>
+        <button class="switch-link" onclick="logout();showLogin();">Çıkış Yap</button>
+      </p>
+    </div>
+  </div>
+  <script>
+    function showRegister() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.remove('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.add('hidden');
+      document.getElementById('reset-password').classList.add('hidden');
+    }
+    function showLogin() {
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.add('hidden');
+      document.getElementById('reset-password').classList.add('hidden');
+    }
+    function showForgotPassword() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.remove('hidden');
+      document.getElementById('reset-password').classList.add('hidden');
+    }
+    function showResetPassword() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.add('hidden');
+      document.getElementById('reset-password').classList.remove('hidden');
+    }
+    function showPayment() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.add('hidden');
+      document.getElementById('reset-password').classList.add('hidden');
+      document.getElementById('payment').classList.remove('hidden');
+      document.getElementById('user-list-panel').classList.add('hidden');
+    }
+    function showUserListPanel() {
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('register').classList.add('hidden');
+      document.getElementById('otp').classList.add('hidden');
+      document.getElementById('forgot-password').classList.add('hidden');
+      document.getElementById('reset-password').classList.add('hidden');
+      document.getElementById('payment').classList.add('hidden');
+      document.getElementById('user-list-panel').classList.remove('hidden');
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
