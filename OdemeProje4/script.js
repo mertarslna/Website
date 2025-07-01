@@ -155,26 +155,24 @@ async function createPayment() {
     return;
   }
 
-  // Sepet (cart) ürünlerini dinamik olarak topla ve toplamı hesapla
+  // Sepet (cart) ürünlerini cartData'dan topla ve toplamı hesapla
   const cart = [];
-  const cartList = document.getElementById('cart-list');
   let total = 0;
-  for (let i = 0; i < cartList.children.length; i++) {
-    const row = cartList.children[i];
-    const price = parseFloat(row.querySelector(`[id^="cart${i}-price"]`).value) || 0;
-    const qty = parseFloat(row.querySelector(`[id^="cart${i}-quantity"]`).value) || 0;
-    const type = row.querySelector(`[id^="cart${i}-type"]`).value;
-    if (type === "discount") {
+  for (let i = 0; i < cartData.length; i++) {
+    const obj = cartData[i];
+    const price = parseFloat(obj.price) || 0;
+    const qty = parseFloat(obj.quantity) || 0;
+    if (obj.type === "discount") {
       total -= price * qty;
     } else {
       total += price * qty;
     }
     cart.push({
-      id: row.querySelector(`[id^="cart${i}-id"]`).value,
-      name: row.querySelector(`[id^="cart${i}-name"]`).value,
-      type,
-      price: row.querySelector(`[id^="cart${i}-price"]`).value,
-      quantity: Number(row.querySelector(`[id^="cart${i}-quantity"]`).value)
+      id: obj.id,
+      name: obj.name,
+      type: obj.type,
+      price: obj.price,
+      quantity: Number(obj.quantity)
     });
   }
   const amount = total.toFixed(2);

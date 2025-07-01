@@ -1,0 +1,154 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: #f5f7fa;
+}
+
+h1, h2 {
+  color: #2d3e50;
+  text-align: center;
+}
+
+.main-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+}
+
+.form-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+fieldset {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 18px 16px 10px 16px;
+  background: #fafbfc;
+  min-width: 260px;
+  flex: 1 1 260px;
+  box-sizing: border-box;
+}
+
+legend {
+  font-weight: bold;
+  color: #4a5a6a;
+  padding: 0 8px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #3a4a5a;
+  font-size: 15px;
+}
+
+input, select {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid #cfd8dc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 15px;
+  background: #fff;
+  transition: border 0.2s;
+}
+
+input:focus, select:focus {
+  border: 1.5px solid #4CAF50;
+  outline: none;
+}
+
+button {
+  padding: 10px 22px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+.cart-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cart-row input {
+  width: 90px;
+  margin: 0;
+}
+
+.cart-row button {
+  background: #e53935;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  margin-left: 0;
+}
+
+.cart-row button:hover {
+  background: #b71c1c;
+}
+
+#cart-modal-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(44,62,80,0.35);
+  z-index: 1000;
+  display: none;
+}
+
+#cart-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 32px 24px 18px 24px;
+  min-width: 350px;
+  max-width: 95vw;
+  z-index: 1001;
+  display: none;
+}
+
+#cart-modal h3 {
+  margin-top: 0;
+  color: #2d3e50;
+}
+
+#cart-modal .cart-row {
+  margin-bottom: 12px;
+}
+
+#cart-modal .close-btn {
+  background: #e53935;
+  float: right;
+  margin-top: -8px;
+  margin-right: -8px;
+  font-size: 18px;
+  padding: 2px 10px;
+}
+
+@media (max-width: 1100px) {
+  .form-flex { flex-direction: column; }
+  .form-flex fieldset { min-width: unset; }
+  .main-container { padding: 16px 4px; }
+}
