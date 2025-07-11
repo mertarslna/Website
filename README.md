@@ -1,1 +1,1 @@
-https://mertarslna.github.io/Website/
+https://mertarslna.github.io/web-projects/
